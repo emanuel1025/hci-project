@@ -35,7 +35,7 @@
               <form class="navbar-form  " role="search">
                 <div class="input-group">
                   
-                  <input type="text" class="input-control paddingR40 searchBar"placeholder="Search" name="q">
+                  <input type="text" class="input-control paddingR40 searchBar"placeholder="Search" name="url">
                 </div>
               </form>
             </div>
@@ -84,7 +84,8 @@
     headers.append('Access-Control-Allow-Origin', 'http://localhost:3000');
     headers.append('Access-Control-Allow-Credentials', 'true');
 
-    let url = "https://goo.gl/MV8Tkh"
+    let searchParams = new URLSearchParams(window.location.search)
+    let url = searchParams.get('url')
     fetch('http://localhost:3000/website/' + encodeURIComponent(url), {
         mode: 'cors',
         headers: headers
