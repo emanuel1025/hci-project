@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "article-parser": "^4.2.12",
+    "boilerpipe-scraper": "^1.0.0"
+  }
+}
