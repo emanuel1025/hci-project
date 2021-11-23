@@ -10,12 +10,12 @@
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
   <script src="talkify.js"></script>
-    <script>
+<!--     <script>
   if (annyang) {
     // Let's define a command.
-    const commands = {
-      'hello': () => { alert('Hello world!'); }
-    };
+    annyang.addCommands({
+    'hello': function() { alert('Hello world!'); }
+  });
 
     // Add our commands to annyang
     // annyang.addCommands(commands);
@@ -27,7 +27,7 @@
     // Start listening.
     // annyang.start();
   }
-  </script>
+  </script> -->
 </head>
 <body>
   <div>
@@ -52,7 +52,28 @@
   </div>
   <div id="page-content">
   </div>
+  <!-- <script>
+  if (annyang) {
+    // Let's define a command.
+    annyang.addCommands({
+    'hello': function() { alert('Hello world!'); }
+  });
+
+    // Add our commands to annyang
+    // annyang.addCommands(commands);
+
+    // SpeechKITT.annyang();
+    SpeechKITT.setStylesheet('https://cdnjs.cloudflare.com/ajax/libs/SpeechKITT/0.3.0/themes/flat.css');
+    SpeechKITT.setStartCommand(annyang.resume);
+    SpeechKITT.setAbortCommand(annyang.pause);
+    SpeechKITT.vroom();
+
+    // Start listening.
+    // annyang.start();
+  }
+  </script> -->
   <script>
+
     talkify.config.remoteService.host = 'https://talkify.net';
     talkify.config.remoteService.apiKey = '3fe125da-146b-4170-964b-ce631783c6ad';
 
@@ -71,17 +92,47 @@
           .begin()
           .usingPlayer(player)
           .withRootSelector('#page-content')
-          .withTextInteraction()
+          // .withTextInteraction()
           .build();
+
+        annyang.addCommands({
+    'play': function() { playlist.play(); }
+  });
+
+    // Add our commands to annyang
+    // annyang.addCommands(commands);
+
+    // SpeechKITT.annyang();
+    SpeechKITT.setStylesheet('https://cdnjs.cloudflare.com/ajax/libs/SpeechKITT/0.3.0/themes/flat.css');
+    SpeechKITT.setStartCommand(annyang.resume);
+    SpeechKITT.setAbortCommand(annyang.pause);
+    SpeechKITT.vroom();
     
-        playlist.play();
+        
         console.log("I have loaded!")
       }, 3000);
 
     })
+  //   if (annyang) {
+  //     setTimeout( function(){
+  //   // Let's define a command.
+  //   annyang.addCommands({
+  //   'play': function() { playlist.play(); }
+  // });
+
+  //   // Add our commands to annyang
+  //   // annyang.addCommands(commands);
+
+  //   // SpeechKITT.annyang();
+  //   SpeechKITT.setStylesheet('https://cdnjs.cloudflare.com/ajax/libs/SpeechKITT/0.3.0/themes/flat.css');
+  //   SpeechKITT.setStartCommand(annyang.resume);
+  //   SpeechKITT.setAbortCommand(annyang.pause);
+  //   SpeechKITT.vroom();
+  // }, 4000);
     // $("#root1").attr({
       
     // });
+  // }
     let headers = new Headers();
 
     headers.append('Content-Type', 'application/json');
