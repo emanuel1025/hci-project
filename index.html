@@ -5,11 +5,12 @@
   <meta charset="utf-8">
   <title>HCI Project</title>
   <link rel="stylesheet" href="style.css">
-  <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/annyang/2.6.1/annyang.min.js"></script> -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/annyang/2.6.1/annyang.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/SpeechKITT/0.3.0/speechkitt.min.js"></script>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
   <script src="talkify.js"></script>
-    <!-- <script>
+    <script>
   if (annyang) {
     // Let's define a command.
     const commands = {
@@ -17,12 +18,16 @@
     };
 
     // Add our commands to annyang
-    annyang.addCommands(commands);
+    // annyang.addCommands(commands);
+
+    SpeechKITT.annyang();
+    SpeechKITT.setStylesheet('https://cdnjs.cloudflare.com/ajax/libs/SpeechKITT/0.3.0/themes/flat.css');
+    SpeechKITT.render();
 
     // Start listening.
-    annyang.start();
+    // annyang.start();
   }
-  </script> -->
+  </script>
 </head>
 <body>
   <div>
@@ -54,8 +59,9 @@
     talkify.config.ui.audioControls.enabled = true; //<-- Disable to get the browser built in audio controls
     talkify.config.ui.audioControls.voicepicker.enabled = true;
     talkify.config.ui.audioControls.container = document.getElementById("player-and-voices");
+    talkify.autoScroll.activate();
 
-    $("#page-content").on('load', function() {
+    $("#page-content").ready(function() {
       setTimeout(function() {
         var player = new talkify.TtsPlayer()
           .enableTextHighlighting()
