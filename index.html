@@ -10,24 +10,7 @@
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
   <script src="talkify.js"></script>
-<!--     <script>
-  if (annyang) {
-    // Let's define a command.
-    annyang.addCommands({
-    'hello': function() { alert('Hello world!'); }
-  });
-
-    // Add our commands to annyang
-    // annyang.addCommands(commands);
-
-    SpeechKITT.annyang();
-    SpeechKITT.setStylesheet('https://cdnjs.cloudflare.com/ajax/libs/SpeechKITT/0.3.0/themes/flat.css');
-    SpeechKITT.render();
-
-    // Start listening.
-    // annyang.start();
-  }
-  </script> -->
+  <script src="rgbcolor.js"></script>
 </head>
 <body>
   <div>
@@ -52,36 +35,47 @@
   </div>
   <div id="page-content">
   </div>
-  <!-- <script>
-  if (annyang) {
-    // Let's define a command.
-    annyang.addCommands({
-    'hello': function() { alert('Hello world!'); }
-  });
 
-    // Add our commands to annyang
-    // annyang.addCommands(commands);
-
-    // SpeechKITT.annyang();
-    SpeechKITT.setStylesheet('https://cdnjs.cloudflare.com/ajax/libs/SpeechKITT/0.3.0/themes/flat.css');
-    SpeechKITT.setStartCommand(annyang.resume);
-    SpeechKITT.setAbortCommand(annyang.pause);
-    SpeechKITT.vroom();
-
-    // Start listening.
-    // annyang.start();
-  }
-  </script> -->
   <script>
     function zoomPage(zoom_in) {
       var zoom_level = $('#page-content').css( "zoom" );
-      var zoom_level_int = Number(zoom_level.slice(-1))
+      var zoom_level_int = parseFloat(zoom_level)
+      console.log("I am zooming", zoom_level_int, zoom_level);
       if (zoom_in) {
-        $("#page-content").css({"zoom": (zoom_level_int + 0.1).toString()});
+        var new_zoom = (zoom_level_int + 0.15).toString();
+        $("#page-content").css({"zoom": new_zoom});
       }
       else {
-        $("#page-content").css({"zoom": (zoom_level_int - 0.1).toString()});
+        $("#page-content").css({"zoom": (zoom_level_int - 0.15).toString()});
       }
+    }
+
+    function invertColors() {
+      console.log("inverting colors")
+      //set up color properties to iterate through
+      var colorProperties = ['color', 'background-color'];
+
+      //iterate through every element in reverse order...
+      $("*").each(function() {
+          var color = null;
+
+          for (var prop in colorProperties) {
+              prop = colorProperties[prop];
+
+              //if we can't find this property or it's null, continue
+              if (!$(this).css(prop)) continue; 
+
+              //create RGBColor object
+              color = new RGBColor($(this).css(prop));
+
+              if (color.ok) { 
+                  //good to go, let's build up this RGB baby!
+                  //subtract each color component from 255
+                  $(this).css(prop, 'rgb(' + (255 - color.r) + ', ' + (255 - color.g) + ', ' + (255 - color.b) + ')');
+              }
+              color = null; //some cleanup
+          }
+      });
     }
 
     talkify.config.remoteService.host = 'https://talkify.net';
@@ -106,43 +100,28 @@
           .build();
 
         annyang.addCommands({
-    'play': function() { playlist.play(); }
-  });
+          'zoom out': function() {
+            zoomPage(false)
+          },
+          'zoom in': function() {
+            zoomPage(true)
+          },
+          'invert': function() {
+            invertColors()
+          }
+        });
 
-    // Add our commands to annyang
-    // annyang.addCommands(commands);
-
-    // SpeechKITT.annyang();
-    SpeechKITT.setStylesheet('https://cdnjs.cloudflare.com/ajax/libs/SpeechKITT/0.3.0/themes/flat.css');
-    SpeechKITT.setStartCommand(annyang.resume);
-    SpeechKITT.setAbortCommand(annyang.pause);
-    SpeechKITT.vroom();
-    
+        SpeechKITT.setStylesheet('https://cdnjs.cloudflare.com/ajax/libs/SpeechKITT/0.3.0/themes/flat.css');
+        SpeechKITT.setStartCommand(annyang.resume);
+        SpeechKITT.setAbortCommand(annyang.pause);
+        SpeechKITT.vroom();
         
-        console.log("I have loaded!")
-      }, 3000);
-      zoomPage(true);
+            
+            console.log("I have loaded!")
+          }, 3000);
+          zoomPage(true);
     })
-  //   if (annyang) {
-  //     setTimeout( function(){
-  //   // Let's define a command.
-  //   annyang.addCommands({
-  //   'play': function() { playlist.play(); }
-  // });
 
-  //   // Add our commands to annyang
-  //   // annyang.addCommands(commands);
-
-  //   // SpeechKITT.annyang();
-  //   SpeechKITT.setStylesheet('https://cdnjs.cloudflare.com/ajax/libs/SpeechKITT/0.3.0/themes/flat.css');
-  //   SpeechKITT.setStartCommand(annyang.resume);
-  //   SpeechKITT.setAbortCommand(annyang.pause);
-  //   SpeechKITT.vroom();
-  // }, 4000);
-    // $("#root1").attr({
-      
-    // });
-  // }
     let headers = new Headers();
 
     headers.append('Content-Type', 'application/json');
