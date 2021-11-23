@@ -53,6 +53,17 @@
   <div id="page-content">
   </div>
   <script>
+    function zoomPage(zoom_in) {
+      var zoom_level = $('#page-content').css( "zoom" );
+      var zoom_level_int = Number(zoom_level.slice(-1))
+      if (zoom_in) {
+        $("#page-content").css({"zoom": (zoom_level_int + 0.1).toString()});
+      }
+      else {
+        $("#page-content").css({"zoom": (zoom_level_int - 0.1).toString()});
+      }
+    }
+
     talkify.config.remoteService.host = 'https://talkify.net';
     talkify.config.remoteService.apiKey = '3fe125da-146b-4170-964b-ce631783c6ad';
 
@@ -77,11 +88,9 @@
         playlist.play();
         console.log("I have loaded!")
       }, 3000);
-
+      zoomPage(true);
     })
-    // $("#root1").attr({
-      
-    // });
+
     let headers = new Headers();
 
     headers.append('Content-Type', 'application/json');
@@ -101,12 +110,13 @@
       return response.text();
     }).then(function (data) {
       // This is the JSON from our response
-      console.log(data);
+      // console.log(data);
       $('#page-content').html(data);
     }).catch(function (err) {
       // There was an error
       console.warn('Something went wrong.', err);
     });
+
   </script>
 </body>
 </html>
