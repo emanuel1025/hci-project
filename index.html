@@ -5,6 +5,7 @@
   <meta charset="utf-8">
   <title>HCI Project</title>
   <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="dark-mode.css">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/annyang/2.6.1/annyang.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/SpeechKITT/0.3.0/speechkitt.min.js"></script>
 
@@ -12,7 +13,7 @@
   <script src="talkify.js"></script>
   <script src="rgbcolor.js"></script>
 </head>
-<body>
+<body id="body">
   <div>
     <div class="first-row">
       <header id="siteHeader" class="site-header">
@@ -24,6 +25,11 @@
                 <div class="input-group">
                   
                   <input type="text" class="input-control paddingR40 searchBar"placeholder="Search" name="url">
+                  <div class="form-check form-switch">
+  <input type="checkbox" class="form-check-input" id="darkSwitch" />
+  <label class="custom-control-label" for="darkSwitch">Dark Mode</label>
+</div>
+<script src="dark-mode-switch.min.js"></script>
                 </div>
               </form>
             </div>
@@ -31,7 +37,6 @@
         </nav>
       </header>
     </div>
-    <!-- <iframe src="https://en.wikipedia.org/wiki/Wii" class="second-row"></iframe> -->
   </div>
   <div id="page-content">
   </div>
@@ -40,7 +45,6 @@
     function zoomPage(zoom_in) {
       var zoom_level = $('#page-content').css( "zoom" );
       var zoom_level_int = parseFloat(zoom_level)
-      console.log("I am zooming", zoom_level_int, zoom_level);
       if (zoom_in) {
         var new_zoom = (zoom_level_int + 0.15).toString();
         $("#page-content").css({"zoom": new_zoom});
@@ -52,30 +56,19 @@
 
     function invertColors() {
       console.log("inverting colors")
-      //set up color properties to iterate through
-      var colorProperties = ['color', 'background-color'];
-
-      //iterate through every element in reverse order...
-      $("*").each(function() {
-          var color = null;
-
-          for (var prop in colorProperties) {
-              prop = colorProperties[prop];
-
-              //if we can't find this property or it's null, continue
-              if (!$(this).css(prop)) continue; 
-
-              //create RGBColor object
-              color = new RGBColor($(this).css(prop));
-
-              if (color.ok) { 
-                  //good to go, let's build up this RGB baby!
-                  //subtract each color component from 255
-                  $(this).css(prop, 'rgb(' + (255 - color.r) + ', ' + (255 - color.g) + ', ' + (255 - color.b) + ')');
-              }
-              color = null; //some cleanup
+      $(document).ready(function() {
+          var checkBoxes = $("#darkSwitch");
+          checkBoxes.prop("checked", !checkBoxes.prop("checked"));   
+          if ($('#body').attr('data-theme')) {
+            $('#body').removeAttr('data-theme'); 
+              
           }
+          else {
+            $('#body').attr('data-theme', 'dark'); 
+          }
+ 
       });
+ 
     }
 
     talkify.config.remoteService.host = 'https://talkify.net';
@@ -106,7 +99,7 @@
           'zoom in': function() {
             zoomPage(true)
           },
-          'invert': function() {
+          'hello': function() {
             invertColors()
           }
         });
@@ -117,9 +110,9 @@
         SpeechKITT.vroom();
         
             
-            console.log("I have loaded!")
-          }, 3000);
-          zoomPage(true);
+        console.log("I have loaded!")
+      }, 3000);
+
     })
 
     let headers = new Headers();
@@ -136,15 +129,10 @@
         mode: 'cors',
         headers: headers
     }).then(function (response) {
-      // The API call was successful!
-      // console.log(response);
       return response.text();
     }).then(function (data) {
-      // This is the JSON from our response
-      // console.log(data);
       $('#page-content').html(data);
     }).catch(function (err) {
-      // There was an error
       console.warn('Something went wrong.', err);
     });
 
